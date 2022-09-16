@@ -1,11 +1,33 @@
-import { MagnifyingGlassPlus } from 'phosphor-react'
-import { GameBanner } from './components/GameBanner'
-import './styles/main.css'
+import { useEffect, useState } from 'react'
+import * as Dialog from '@radix-ui/react-dialog'
 
-import Logo from './assets/logo.svg'
+import { GameBanner } from './components/GameBanner'
 import { Banner } from './components/Banner'
 
+import Logo from './assets/logo.svg'
+import './styles/main.css'
+import { Modal } from './components/Modal'
+
+interface Game {
+  id: string
+  title: string
+  bannerUrl: string
+  _count: {
+    ads: number
+  }
+}
+
 function App() {
+  const [games, setGames] = useState<Game[]>([])
+
+  useEffect(() => {
+    fetch('http://localhost:3333/games')
+      .then(response => response.json())
+      .then(data => {
+        setGames(data)
+      })
+  }, [])
+
   return (
     <div className="w-11/12 max-w-[1344px] mx-auto flex flex-col items-center my-20">
       <img src={Logo} alt="Logo" />
@@ -19,15 +41,22 @@ function App() {
       </h1>
 
       <div className="grid grid-cols-6 gap-6 mt-16">
-        <GameBanner bannerUrl='/image-1.png' title='Ligue Of Legends' adsCount={5}/>
-        <GameBanner bannerUrl='/image-2.png' title='Dota 2' adsCount={7}/>
-        <GameBanner bannerUrl='/image-3.png' title='Counter Strike' adsCount={10}/>
-        <GameBanner bannerUrl='/image-4.png' title='Apex Legends' adsCount={8}/>
-        <GameBanner bannerUrl='/image-5.png' title='Fortnite' adsCount={3}/>
-        <GameBanner bannerUrl='/image-6.png' title='World WarCraft' adsCount={2}/>
+        {games.map(game => {
+          return (
+            <GameBanner
+              key={game.id}
+              bannerUrl={game.bannerUrl}
+              title={game.title}
+              adsCount={game._count.ads}
+            />
+          )
+        })}
       </div>
 
-       <Banner />
+      <Dialog.Root>
+        <Banner />
+        <Modal />
+      </Dialog.Root>
     </div>
   )
 }
