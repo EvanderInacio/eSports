@@ -17,7 +17,7 @@ export function Modal() {
   const [ useVoiceChannel, setUseVoiceChannel ] = useState(false)
 
   useEffect(() => {
-    axios('http://localhost:3333/games')
+    axios('https://evander-sports.fly.dev/games')
       .then(response => {
         setGames(response.data)
       })
