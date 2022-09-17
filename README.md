@@ -4,7 +4,7 @@
 
 <br>
 
-![Resultado final do projeto]()
+![Resultado final do projeto](https://raw.githubusercontent.com/EvanderInacio/eSports/main/assets/app-preview.jpeg)
 
 <br>
 
